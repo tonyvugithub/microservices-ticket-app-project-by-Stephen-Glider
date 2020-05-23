@@ -1,0 +1,4 @@
+node_modules
+/client/.next
+/auth/src/test
+/**/__test__
