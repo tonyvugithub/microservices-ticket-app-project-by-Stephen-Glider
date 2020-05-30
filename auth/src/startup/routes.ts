@@ -3,7 +3,7 @@ import { currentUserRouter } from '../routes/current-user';
 import { signinRouter } from '../routes/signin';
 import { signupRouter } from '../routes/signup';
 import { signoutRouter } from '../routes/signout';
-import { NotFoundError } from '../errors/not-found-errors';
+import { NotFoundError } from '@tonyknvu/common';
 
 export default (app: Application) => {
   app.use(currentUserRouter);

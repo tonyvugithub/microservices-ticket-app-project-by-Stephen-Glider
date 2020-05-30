@@ -27,8 +27,8 @@ build:
         manual:
           - src: "**/*.js"
             dest: .
-    - image: tonyvu1991/ticket
-      context: ticket
+    - image: tonyvu1991/tickets
+      context: tickets
       docker:
         dockerfile: Dockerfile
       sync:

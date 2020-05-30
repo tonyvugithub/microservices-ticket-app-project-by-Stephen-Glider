@@ -6,8 +6,8 @@ import 'express-async-errors';
 import cookieSession from 'cookie-session';
 
 //Import the errorHandle middleware from common library custom package
-import { errorHandler } from '@tonyknvu/common';
-import userRoutes from './startup/routes';
+import { errorHandler, currentUser } from '@tonyknvu/common';
+import ticketsRoutes from './startup/routes';
 
 export const app = express();
 app.set('trust proxy', true);
@@ -20,8 +20,10 @@ app.use(
   })
 );
 
+app.use(currentUser);
+
 //Extract all routes
-userRoutes(app);
+ticketsRoutes(app);
 
 //Error handler middleware
 app.use(errorHandler);

@@ -14,9 +14,9 @@ spec:
             backend:
               serviceName: auth-srv
               servicePort: 3001
-          - path: /api/ticket/?(.*)
+          - path: /api/tickets/?(.*)
             backend:
-              serviceName: ticket-srv
+              serviceName: tickets-srv
               servicePort: 3004
           - path: /api/orders
             backend:

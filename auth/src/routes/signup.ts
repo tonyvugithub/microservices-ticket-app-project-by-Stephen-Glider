@@ -1,9 +1,8 @@
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
-import { validateRequest } from '../middlewares/validate-request';
+import { validateRequest, BadRequestError } from '@tonyknvu/common';
 import { generateJWT } from '../helpers/jwt';
 import { User } from '../models/User';
-import { BadRequestError } from '../errors/bad-request-error';
 
 const router = express.Router();
 
