@@ -10,15 +10,12 @@ spec:
     - host: ticketing.dev
       http:
         paths:
+          #The port # of each service is irrelevant and do not have to be different
           - path: /api/users/?(.*)
             backend:
               serviceName: auth-srv
               servicePort: 3001
-          - path: /api/tickets/?(.*)
-            backend:
-              serviceName: tickets-srv
-              servicePort: 3004
-          - path: /api/orders
+          - path: /api/orders/?(.*)
             backend:
               serviceName: orders-srv
               servicePort: 3002
@@ -26,6 +23,10 @@ spec:
             backend:
               serviceName: payment-srv
               servicePort: 3003
+          - path: /api/tickets/?(.*)
+            backend:
+              serviceName: tickets-srv
+              servicePort: 3004
           #The default path (client path) need to be at the end if all the api paths did not match
           - path: /?(.*)
             backend:

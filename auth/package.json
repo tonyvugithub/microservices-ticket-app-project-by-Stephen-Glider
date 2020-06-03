@@ -15,7 +15,7 @@
     ]
   },
   "keywords": [],
-  "author": "",
+  "author": "Tony",
   "license": "ISC",
   "dependencies": {
     "@tonyknvu/common": "^1.0.2",

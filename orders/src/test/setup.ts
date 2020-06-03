@@ -1,8 +1,7 @@
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
-import { app } from '../app';
-import request from 'supertest';
+
 
 declare global {
   namespace NodeJS {

@@ -7,6 +7,8 @@ import {
   validateRequest,
   requireAuth,
 } from '@tonyknvu/common';
+import { TicketUpdatedPublisher } from '../events/publishers/TicketUpdatedPublisher';
+import { natsWrapper } from '../nats-wrapper';
 
 const router = express.Router();
 
@@ -39,6 +41,14 @@ router.put(
     });
 
     await ticket.save();
+
+    new TicketUpdatedPublisher(natsWrapper.client).publish({
+      id: ticket.id,
+      version: ticket.version,
+      title: ticket.title,
+      price: ticket.price,
+      userId: ticket.userId,
+    });
 
     res.send(ticket);
   }

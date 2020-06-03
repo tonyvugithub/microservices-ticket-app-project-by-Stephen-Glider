@@ -1,0 +1,45 @@
+import express, { Request, Response } from 'express';
+import { Order, OrderStatus } from '../models/order';
+import {
+  requireAuth,
+  NotFoundError,
+  NotAuthorizedError,
+} from '@tonyknvu/common';
+import { OrderCancelledPublisher } from '../events/publishers/OrderCancelledPublisher';
+import { natsWrapper } from '../nats-wrapper';
+
+const router = express.Router();
+
+router.delete(
+  '/api/orders/:orderId',
+  requireAuth,
+  async (req: Request, res: Response) => {
+    const { orderId } = req.params;
+
+    const order = await Order.findById(orderId).populate('ticket');
+
+    if (!order) {
+      throw new NotFoundError();
+    }
+
+    if (order.userId !== req.currentUser!.id) {
+      throw new NotAuthorizedError();
+    }
+
+    //Delete an order in this context means changing the status to 'cancelled'
+    order.status = OrderStatus.Cancelled;
+    await order.save();
+
+    //Publish an event saying this was cancelled
+    new OrderCancelledPublisher(natsWrapper.client).publish({
+      id: order.id,
+      ticket: {
+        id: order.ticket.id,
+      },
+    });
+
+    res.status(204).send(order);
+  }
+);
+
+export { router as deleteOrderRouter };

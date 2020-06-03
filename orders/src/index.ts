@@ -1,12 +1,11 @@
-import express from 'express';
+import mongoDBConnection from './startup/db';
+import natsConnection from './startup/nats';
 
-const app = express();
-app.use(express.json());
-
-app.get('/api/orders', (req, res) => {
-  res.send('Access orders service through GET');
-});
+import { app } from './app';
 
 app.listen(3002, () => {
-  console.log('Orders Service listening on port 3002');
+  console.log('Orders service listening on port 3002');
 });
+
+natsConnection(); //Connect to NATS Streaming Server
+mongoDBConnection(); //Connect to MongoDB
