@@ -12,6 +12,8 @@ interface TicketDoc extends mongoose.Document {
   price: number;
   userId: string;
   version: number;
+  //orderId is optional as the first time ticket is created there is no orderId associated with it
+  orderId?: string;
 }
 
 interface TicketModel extends mongoose.Model<TicketDoc> {
@@ -31,6 +33,9 @@ const ticketSchema = new mongoose.Schema(
     userId: {
       type: String,
       required: true,
+    },
+    orderId: {
+      type: String,
     },
   },
   {

@@ -6,6 +6,7 @@ import {
   NotAuthorizedError,
   validateRequest,
   requireAuth,
+  BadRequestError,
 } from '@tonyknvu/common';
 import { TicketUpdatedPublisher } from '../events/publishers/TicketUpdatedPublisher';
 import { natsWrapper } from '../nats-wrapper';
@@ -29,6 +30,12 @@ router.put(
 
     if (!ticket) {
       throw new NotFoundError();
+    }
+
+    if (ticket.orderId) {
+      throw new BadRequestError(
+        'Someone already reserved this ticket, you cannot edit now'
+      );
     }
 
     if (ticket.userId !== req.currentUser!.id) {

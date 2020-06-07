@@ -4,12 +4,15 @@ import { useState } from 'react';
 export default ({ url, method, body, onSuccess }) => {
   const [errors, setErrors] = useState(null);
 
-  const doRequest = async () => {
+  const doRequest = async (props = {}) => {
     try {
       //Before making any new request, reset the errors state of previos request
       setErrors(null);
       //Ingress will route our request according to the unique path we specified
-      const response = await axios[method](url, body);
+      const response = await axios[method](url, {
+        ...body,
+        ...props,
+      });
 
       if (response) {
         onSuccess(response.data);

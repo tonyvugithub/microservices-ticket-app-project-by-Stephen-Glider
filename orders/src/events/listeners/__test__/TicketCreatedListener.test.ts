@@ -9,11 +9,11 @@ const setup = async () => {
   const listener = new TicketCreatedListener(natsWrapper.client);
   //Create a fake data event
   const data: TicketCreatedEvent['data'] = {
-    id: new mongoose.Types.ObjectId().toHexString(),
+    id: mongoose.Types.ObjectId().toHexString(),
     version: 0,
     title: 'concert',
     price: 20,
-    userId: new mongoose.Types.ObjectId().toHexString(),
+    userId: mongoose.Types.ObjectId().toHexString(),
   };
   //Create a fake message object
   //@ts-ignore
@@ -38,6 +38,9 @@ it('creates and saves a ticket when receive a ticket:created event from NATS', a
 });
 
 it('acks the message', async () => {
+  const { listener, data, msg } = await setup();
   //Call the onMessage function with the data object + message object
+  await listener.onMessage(data, msg);
   //write assertions to make sure ack function is called
+  expect(msg.ack).toHaveBeenCalled();
 });

@@ -4,7 +4,8 @@ import { Ticket } from '../models/ticket';
 const router = express.Router();
 
 router.get('/api/tickets', async (req: Request, res: Response) => {
-  const tickets = await Ticket.find({});
+  //Only return the ticket that is not reserved aka does not have an orderId property
+  const tickets = await Ticket.find({ orderId: undefined });
   res.send(tickets);
 });
 

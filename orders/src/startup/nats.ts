@@ -1,6 +1,8 @@
 import { natsWrapper } from '../nats-wrapper';
 import { TicketCreatedListener } from '../events/listeners/TicketCreatedListener';
 import { TicketUpdatedListener } from '../events/listeners/TicketUpdatedListener';
+import { ExpirationCompleteListener } from '../events/listeners/ExpirationCompleteListener';
+import { PaymentCreatedListener } from '../events/listeners/PaymentCreatedListener';
 
 export default async () => {
   //The checks are to satisfy TS
@@ -33,9 +35,11 @@ export default async () => {
     process.on('SIGINT', () => natsWrapper.client.close());
     process.on('SIGTERM', () => natsWrapper.client.close());
 
-    //Listening for events sent to the orders service
+    //Listening for events sent to the orders service from tickets service
     new TicketCreatedListener(natsWrapper.client).listen();
     new TicketUpdatedListener(natsWrapper.client).listen();
+    new ExpirationCompleteListener(natsWrapper.client).listen();
+    new PaymentCreatedListener(natsWrapper.client).listen();
   } catch (err) {
     console.error(err);
   }

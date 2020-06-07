@@ -1,5 +1,6 @@
 import { natsWrapper } from '../nats-wrapper';
-import { randomBytes } from 'crypto';
+import { OrderCreatedListener } from '../events/listeners/OrderCreatedListener';
+import { OrderCancelledListener } from '../events/listeners/OrderCancelledListener';
 
 export default async () => {
   //The checks are to satisfy TS
@@ -31,6 +32,10 @@ export default async () => {
     //Graceful shutdown
     process.on('SIGINT', () => natsWrapper.client.close());
     process.on('SIGTERM', () => natsWrapper.client.close());
+
+    //Listen for events coming from orders service to update the states of the tickets
+    new OrderCreatedListener(natsWrapper.client).listen();
+    new OrderCancelledListener(natsWrapper.client).listen();
   } catch (err) {
     console.error(err);
   }
