@@ -3,6 +3,7 @@ import { DatabaseConnectionError } from '@tonyknvu/common';
 
 export default async () => {
   //Do the check right before connect to the database so JWT_KEY always defined
+  console.log('Starting up...');
   if (!process.env.JWT_KEY) {
     throw new Error('JWT_KEY must be defined!');
   }
